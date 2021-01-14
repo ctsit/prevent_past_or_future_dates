@@ -1,0 +1,15 @@
+{
+    "name": "Past Future Date Tags",
+    "namespace": "PastFutureDate\\ExternalModule",
+    "description": "This module adds action tags to prevent past dates and future dates",
+    "permissions": [
+        "redcap_every_page_top"
+    ],
+    "authors": [
+        {
+            "name": "Michael Bentz",
+            "email": "mbentz@ufl.edu",
+            "institution": "University of Florida"
+        }
+    ]
+}
