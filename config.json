@@ -1,6 +1,6 @@
 {
     "name": "Past Future Date Tags",
-    "namespace": "PastFutureDate\\ExternalModule",
+    "namespace": "PastFutureDateTags\\ExternalModule",
     "description": "This module adds action tags to prevent past dates and future dates",
     "permissions": [
         "redcap_every_page_top"

@@ -5,12 +5,13 @@ $(document).ready(function () {
 
     $('body').on('dialogopen', function (event, ui) {
         let $popup = $(event.target);
-        let module = ExternalModules['PastFutureDate'].ExternalModule;
+        let module = ExternalModules['PastFutureDateTags'].ExternalModule;
         let futureDateTag = module.tt('futureDateTag');
         let pastDateTag = module.tt('pastDateTag');
         let markerElement = module.tt('markerElement');
         let helpUrl = module.tt('helpUrl');
 
+        // TODO: Instead of hardcoding initial markerElement traverse for starting point
         appendToMarkerElement($popup, markerElement, futureDateTag, helpUrl);
         appendToMarkerElement($popup, futureDateTag, pastDateTag, helpUrl);
     });
