@@ -33,17 +33,17 @@ class Validation
         'datetime_seconds_ymd',
     ];
 
-     // TODO: Pass in global variables and provide init function
-     static function hasProjectID(): bool
-     {
-         return isset($project_id);
-     }
- 
-     // TODO: Pass in global variables and provide init function
-     static function hasRecordID(): bool
-     {
-         return isset($_GET['id']);
-     }
+    // TODO: Pass in global variables and provide init function
+    static function hasProjectID(): bool
+    {
+        return isset($project_id);
+    }
+
+    // TODO: Pass in global variables and provide init function
+    static function hasRecordID(): bool
+    {
+        return isset($_GET['id']);
+    }
 
     // Checks for 
     // foreach (array_keys($Proj->forms[$instrument]['fields']) as $field_name) {
@@ -72,14 +72,14 @@ class ExternalModule extends AbstractExternalModule
     public $markerElement = "@PREFILL";
     public $pastDateTag = "@PREVENT-PASTDATE";
 
-    function containsFutureDateTag(string $tags): bool
+    function containsFutureDateTag(?string $tags): bool
     {
-        return in_array($this->futureDateTag, explode(' ', $tags)); 
+        return (isset($tags)) ? in_array($this->futureDateTag, explode(' ', $tags)) : false;
     }
 
-    function containsPastDateTag(string $tags): bool
+    function containsPastDateTag(?string $tags): bool
     {
-        return in_array($this->pastDateTag, explode(' ', $tags)); 
+        return (isset($tags)) ? in_array($this->pastDateTag, explode(' ', $tags)) : false;
     }
 
     function includeSource(string $resourceType, string $path)
@@ -108,33 +108,34 @@ class ExternalModule extends AbstractExternalModule
             $this->tt_addToJavascriptModuleObject('pastDateTag', $this->pastDateTag);
             $this->tt_addToJavascriptModuleObject('markerElement', $this->markerElement);
             $this->includeSource(ResourceType::JS, 'js/helper.js');
-        }
+        } else if (Validation::pageIsIn(array(Page::DATA_ENTRY, Page::SURVEY, Page::SURVEY_THEME)) && isset($_GET['id'])) {
+            global $Proj;
+            $instrument = $_GET['page'];
+            $preventFutureDateFields = [];
+            $preventPastDateFields = [];
 
-        if (!Validation::pageIsIn(array(Page::DATA_ENTRY, Page::SURVEY, Page::SURVEY_THEME)) || empty($_GET['id'])) {
-            return;
-        }
+            foreach (array_keys($Proj->forms[$instrument]['fields']) as $field_name) {
+                $field = $Proj->metadata[$field_name];
+                if (Validation::isDateType($field)) {
+                    // min and max validations do not prevent past or future dates
+                    $element_validation_min = $field['element_validation_min'];
+                    $element_validation_max = $field['element_validation_max'];
+                    $action_tags = $field['misc'];
 
-        global $Proj;
-        $instrument = $_GET['page'];
+                    if ($this->containsFutureDateTag($action_tags)) {
+                        array_push($preventFutureDateFields, $field['field_name']);
+                    }
 
-        foreach (array_keys($Proj->forms[$instrument]['fields']) as $field_name) {
-            $field = $Proj->metadata[$field_name];
-            if (Validation::isDateType($field)) {
-                $element_type = $field['element_type'];
-                $element_validation_min = $field['element_validation_min'];
-                $element_validation_max = $field['element_validation_max'];
-                $action_tag = $field['misc'];
-
-                if ($this->containsFutureDateTag($field['misc'])) {
-                    echo 'something';
-                    // handle this
-                }
-
-                if ($this->containsPastDateTag($field['misc'])) {
-                    echo 'something';
-                    // handle this
+                    if ($this->containsPastDateTag($action_tags)) {
+                        array_push($preventPastDateFields, $field['field_name']);
+                    }
                 }
             }
+
+            $this->initializeJavascriptModuleObject();
+            $this->tt_addToJavascriptModuleObject('preventFutureDateFields', json_encode($preventFutureDateFields));
+            $this->tt_addToJavascriptModuleObject('preventPastDateFields', json_encode($preventPastDateFields));
+            $this->includeSource(ResourceType::JS, 'js/pastFutureDateTags.js');
         }
     }
 }
