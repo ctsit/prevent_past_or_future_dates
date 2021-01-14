@@ -72,14 +72,14 @@ class ExternalModule extends AbstractExternalModule
     public $markerElement = "@PREFILL";
     public $pastDateTag = "@PREVENT-PASTDATE";
 
-    function containsFutureDateTag(array $field): bool
+    function containsFutureDateTag(string $tags): bool
     {
-        return in_array($this->futureDateTag, explode(' ', $field['misc']));
+        return in_array($this->futureDateTag, explode(' ', $tags)); 
     }
 
-    function containsPastDateTag(array $field): bool
+    function containsPastDateTag(string $tags): bool
     {
-        return in_array($this->pastDateTag, explode(' ', $field['misc']));
+        return in_array($this->pastDateTag, explode(' ', $tags)); 
     }
 
     function includeSource(string $resourceType, string $path)
@@ -125,12 +125,12 @@ class ExternalModule extends AbstractExternalModule
                 $element_validation_max = $field['element_validation_max'];
                 $action_tag = $field['misc'];
 
-                if ($this->containsFutureDateTag($field)) {
+                if ($this->containsFutureDateTag($field['misc'])) {
                     echo 'something';
                     // handle this
                 }
 
-                if ($this->containsPastDateTag($field)) {
+                if ($this->containsPastDateTag($field['misc'])) {
                     echo 'something';
                     // handle this
                 }
