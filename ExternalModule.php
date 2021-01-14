@@ -6,8 +6,8 @@ use ExternalModules\AbstractExternalModule;
 
 abstract class Page
 {
-    const ONLINE_DESIGNER = 'Design/online_designer.php';
     const DATA_ENTRY = 'DataEntry/index.php';
+    const ONLINE_DESIGNER = 'Design/online_designer.php';
     const SURVEY = 'surveys/index.php';
     const SURVEY_THEME = 'Surveys/theme_view.php';
 }
@@ -19,7 +19,7 @@ abstract class ResourceType
     const JS = 'js';
 }
 
-class Validation
+abstract class Validate
 {
     static $date_validations = [
         'date_dmy',
@@ -43,16 +43,6 @@ class Validation
     static function hasRecordID(): bool
     {
         return isset($_GET['id']);
-    }
-
-    // Checks for 
-    // foreach (array_keys($Proj->forms[$instrument]['fields']) as $field_name) {
-    // $field = $Proj->metadata[$field_name]; 
-    static function isDateType(array $field): bool
-    {
-        $isTextField = $field['element_type'] == 'text';
-        $hasDateValidation = in_array($field['element_validation_type'], Validation::$date_validations);
-        return $isTextField && $hasDateValidation;
     }
 
     static function pageIs(string $page): bool
@@ -82,6 +72,15 @@ class ExternalModule extends AbstractExternalModule
         return (isset($tags)) ? in_array($this->pastDateTag, explode(' ', $tags)) : false;
     }
 
+    // Given $Proj->metadata[$field_name] return whether the field 
+    // is a text field and has date validation applied
+    function isDateTypeField(array $field): bool
+    {
+        $isTextField = $field['element_type'] == 'text';
+        $hasDateValidation = in_array($field['element_validation_type'], Validate::$date_validations);
+        return $isTextField && $hasDateValidation;
+    }
+
     function includeSource(string $resourceType, string $path)
     {
         switch ($resourceType) {
@@ -99,35 +98,39 @@ class ExternalModule extends AbstractExternalModule
         }
     }
 
+    /*
+     * Note: min and max validations set on the field do not prevent entering past or future dates.
+     * $element_validation_min = $field['element_validation_min'];
+     * $element_validation_max = $field['element_validation_max'];
+    **/
     function redcap_every_page_top($project_id)
     {
-        if (Validation::pageIs(Page::ONLINE_DESIGNER) && $project_id) {
+        if (Validate::pageIs(Page::ONLINE_DESIGNER) && $project_id) {
             $this->initializeJavascriptModuleObject();
             $this->tt_addToJavascriptModuleObject('helpUrl', json_encode($this->getUrl('documentation.php')));
             $this->tt_addToJavascriptModuleObject('futureDateTag', $this->futureDateTag);
             $this->tt_addToJavascriptModuleObject('pastDateTag', $this->pastDateTag);
             $this->tt_addToJavascriptModuleObject('markerElement', $this->markerElement);
             $this->includeSource(ResourceType::JS, 'js/helper.js');
-        } else if (Validation::pageIsIn(array(Page::DATA_ENTRY, Page::SURVEY, Page::SURVEY_THEME)) && isset($_GET['id'])) {
+        } else if (Validate::pageIsIn(array(Page::DATA_ENTRY, Page::SURVEY, Page::SURVEY_THEME)) && isset($_GET['id'])) {
             global $Proj;
             $instrument = $_GET['page'];
             $preventFutureDateFields = [];
             $preventPastDateFields = [];
 
+            // Iterate through all fields and search for date fields with @PREVENT-FUTUREDATE or @PREVENT-PASTDATE
+            // and add them to an array to pass to JS to apply date restrictions
             foreach (array_keys($Proj->forms[$instrument]['fields']) as $field_name) {
                 $field = $Proj->metadata[$field_name];
-                if (Validation::isDateType($field)) {
-                    // min and max validations do not prevent past or future dates
-                    $element_validation_min = $field['element_validation_min'];
-                    $element_validation_max = $field['element_validation_max'];
+                if ($this->isDateTypeField($field)) {
                     $action_tags = $field['misc'];
 
                     if ($this->containsFutureDateTag($action_tags)) {
-                        array_push($preventFutureDateFields, $field['field_name']);
+                        array_push($preventFutureDateFields, $field_name);
                     }
 
                     if ($this->containsPastDateTag($action_tags)) {
-                        array_push($preventPastDateFields, $field['field_name']);
+                        array_push($preventPastDateFields, $field_name);
                     }
                 }
             }
