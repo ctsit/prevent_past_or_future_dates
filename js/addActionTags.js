@@ -23,7 +23,7 @@ $(document).ready(function () {
         prependActionTag($popup, markerElement, pastDateTag, 'Prevents past dates from being entered into date field-—i.e., a text field with date validation applied.');
     });
 
-    var prependToMarkerElement = function (container, markerElement, tagName, tagDescription) {
+    var prependActionTag = function (container, markerElement, tagName, tagDescription) {
         // Aux function that checks if text matches the "@HIDECHOICE" string.
         var isDefaultLabelColumn = function () {
             // console.log($(this).text(), markerElement);
