@@ -107,7 +107,6 @@ class ExternalModule extends AbstractExternalModule
     {
         if (Validate::pageIs(Page::ONLINE_DESIGNER) && $project_id) {
             $this->initializeJavascriptModuleObject();
-            $this->tt_addToJavascriptModuleObject('helpUrl', json_encode($this->getUrl('documentation.php')));
             $this->tt_addToJavascriptModuleObject('futureDateTag', $this->futureDateTag);
             $this->tt_addToJavascriptModuleObject('pastDateTag', $this->pastDateTag);
             $this->tt_addToJavascriptModuleObject('markerElement', $this->markerElement);
