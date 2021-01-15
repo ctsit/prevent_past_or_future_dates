@@ -71,7 +71,7 @@ $(document).ready(function () {
         let dateFormat = val.match(reDateFormat)[0];
         let [minDate, maxDate] = val.match(reDates);
 
-        $input.datepicker("option", "maxDate", "+0d");        
+        $input.datepicker("option", "maxDate", "+0d");
         // Maintain min date
         $input.attr("onblur", "validate(this, '" + minDate + "','" + today + "','soft-typed','" + dateFormat + "',1)");
     }
@@ -91,6 +91,7 @@ $(document).ready(function () {
 
 // Relevant snippets copied from base.js/redcap_validate(ob, min, max, returntype, texttype, regexVal, returnFocus, dateDelimiterReturned)
 function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
+    // console.log(ob, min, max, returntype, texttype, regexVal, returnFocus);
     var origVal;
 
 	// Reset flag on page
@@ -195,7 +196,7 @@ function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
 			var hasDataPickerOpened = hasDatePicker ? $('#ui-datepicker-div:visible').length : false;
 
 			// Now do range check (if needed) for various validation types
-			if ((min != '' || max != '') && !hasDataPickerOpened)
+			if ((min != '' || max != '')) // && !hasDataPickerOpened)
 			{
 				holder1 = ob.value;
 				holder2 = min;
