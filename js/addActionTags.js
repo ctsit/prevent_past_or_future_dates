@@ -19,8 +19,8 @@ $(document).ready(function () {
         if (result.length < 1) return;
 
         let markerElement = $(result[0]).text();
-        prependActionTag($popup, markerElement, futureDateTag, 'Prevents future dates from being entered into date field-—i.e., a text field with date validation applied.');
-        prependActionTag($popup, markerElement, pastDateTag, 'Prevents past dates from being entered into date field-—i.e., a text field with date validation applied.');
+        prependActionTag($popup, markerElement, futureDateTag, 'Prevents future dates from being entered into date field-—i.e., a text field with date validation applied. This and @PREVENT-PASTDATE are mutually exclusive, to enforce today use @TODAY');
+        prependActionTag($popup, markerElement, pastDateTag, 'Prevents past dates from being entered into date field-—i.e., a text field with date validation applied. This and @PREVENT-FUTUREDATE are mutually exclusive, to enforce today use @TODAY');
     });
 
     var prependActionTag = function (container, markerElement, tagName, tagDescription) {

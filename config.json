@@ -1,7 +1,7 @@
 {
     "name": "Past Future Date Tags",
     "namespace": "PastFutureDateTags\\ExternalModule",
-    "description": "This module adds action tags to prevent entering past dates and/or future dates for date fields",
+    "description": "This module adds action tags to prevent entering past dates or future dates for date fields",
     "permissions": [
         "redcap_every_page_top"
     ],
