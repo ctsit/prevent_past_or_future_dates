@@ -59,7 +59,6 @@ abstract class Validate
 class ExternalModule extends AbstractExternalModule
 {
     public $futureDateTag = "@PREVENT-FUTUREDATE";
-    public $markerElement = "@PREFILL";
     public $pastDateTag = "@PREVENT-PASTDATE";
 
     function containsFutureDateTag(?string $tags): bool
@@ -109,7 +108,6 @@ class ExternalModule extends AbstractExternalModule
             $this->initializeJavascriptModuleObject();
             $this->tt_addToJavascriptModuleObject('futureDateTag', $this->futureDateTag);
             $this->tt_addToJavascriptModuleObject('pastDateTag', $this->pastDateTag);
-            $this->tt_addToJavascriptModuleObject('markerElement', $this->markerElement);
             $this->includeSource(ResourceType::JS, 'js/addActionTags.js');
         } else if (Validate::pageIsIn(array(Page::DATA_ENTRY, Page::SURVEY, Page::SURVEY_THEME)) && isset($_GET['id'])) {
             global $Proj;
