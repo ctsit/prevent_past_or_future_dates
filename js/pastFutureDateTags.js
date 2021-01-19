@@ -43,9 +43,7 @@ $(document).ready(function () {
     let preventPastDateFields = JSON.parse(module.tt('preventPastDateFields'));
     let attachedListeners = false;
     
-    const reDateFormat = /(?<=\')\w*_\S{3}(?=')/;
-    const reDates = /\d{4}-\d{2}-\d{2}/g;
-    const today = new Date().toISOString().slice(0, 10);
+    const reDates = /(\d{4}-\d{2}-\d{2}[^']*)/g;
 
     // REDCap calls $.datepicker.setDefaults() after External Module javascript is executed.
     // Because of this the restrictions on the jQuery UI datepicker need to be applied after
@@ -68,25 +66,41 @@ $(document).ready(function () {
     function preventFutureDate(field) {
         let $input = $(`#${field}-tr input`);
         let val = $input.attr("onblur");
-        let dateFormat = val.match(reDateFormat)[0];
+        let dateFormat = $input.attr('fv');
         let [minDate, maxDate] = val.match(reDates);
 
+		// Prevent all past dates (-0d)
         $input.datepicker("option", "maxDate", "+0d");
-        // Maintain min date
-        $input.attr("onblur", "validate(this, '" + minDate + "','" + today + "','soft-typed','" + dateFormat + "',1)");
+        // Override onblur callback function 
+        $input.attr("onblur", "validate(this, '" + minDate + "','" + getBoundary(dateFormat, false) + "','soft-typed','" + dateFormat + "',1)");
     }
 
     // Sets the minDate option on the jQuery UI datepicker
     function preventPastDate(field) {
         let $input = $(`#${field}-tr input`);
-        let val = $input.attr("onblur");
-        let dateFormat = val.match(reDateFormat)[0];
+		let val = $input.attr("onblur");
+        let dateFormat = $input.attr('fv');
         let [minDate, maxDate] = val.match(reDates);
 
-        $input.datepicker("option", "minDate", "-0d");
-        // Maintain max date
-        $input.attr("onblur", "validate(this, '" + today + "','" + maxDate + "','soft-typed','" + dateFormat + "',1)");
-    }
+		// Prevent all past dates (-0d)
+		$input.datepicker("option", "minDate", "-0d");
+        // Override onblur callback function 
+        $input.attr("onblur", "validate(this, '" + getBoundary(dateFormat, true) + "','" + maxDate + "','soft-typed','" + dateFormat + "',1)");
+	}
+	
+	function getBoundary(datetimeFormat, isLowerBound) {
+		let today = new Date().toISOString().slice(0, 10);
+		// matches datetime_seconds_xyz
+		if (datetimeFormat.indexOf('datetime_seconds_') >= 0) {
+			return today + " " + ((isLowerBound) ? "00:00:00" : "23:59:59");
+			// matches datetime_xyz
+		} else if (datetimeFormat.indexOf('datetime_') >= 0) {
+			return today + " " + ((isLowerBound) ? "00:00" : "23:59");
+			// matches date_xyz
+		} else if (datetimeFormat.indexOf('date_') >= 0) {
+			return today;
+		}
+	}
 });
 
 // Relevant snippets copied from base.js/redcap_validate(ob, min, max, returntype, texttype, regexVal, returnFocus, dateDelimiterReturned)
@@ -246,7 +260,7 @@ function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
 					var msg = msg1 + ' (' + (min==''?'no limit':min) + ' - ' + (max==''?'no limit':max) +'). ';// + msg2;
 					$('#'+regexValPopupId).remove();
 					initDialog(regexValPopupId);
-					// $('#'+regexValPopupId).html(msg);
+					$('#'+regexValPopupId).html(msg);
 					setTimeout(function(){
 						simpleDialog(msg, null, regexValPopupId, null, returnFocusJS);
 					},10);
@@ -258,5 +272,28 @@ function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
 			ob.style.backgroundColor='#FFFFFF';
 			return true;
         }
-    }
+	}
+	
+	var msg = ($('#valtext_divs #valtext_regex').length) ? $('#valtext_divs #valtext_regex').text() : 'The value you provided could not be validated because it does not follow the expected format. Please try again.';
+
+	if ($('#valtext_divs #valtext_requiredformat').length && $('#valregex_divs #valregex-'+texttype).length) {
+		// Set default generic message for failure
+		msg += '<div class="fvallab">'+$('#valtext_divs #valtext_requiredformat').text()+' '
+			+  $('#valregex_divs #valregex-'+texttype).attr('label')+'</div>';
+	}
+
+	// Because of strange syncronicity issues of back-to-back fields with validation, set pop-up content first here
+	$('#'+regexValPopupId).remove();
+	initDialog(regexValPopupId);
+	$('#'+regexValPopupId).html(msg);
+	// Give alert message of failure
+	setTimeout(function(){
+		simpleDialog(msg, null, regexValPopupId, null, returnFocusJS);
+		$('#'+regexValPopupId).parent().find('button:first').focus();
+	},10);
+	ob.style.fontWeight = 'bold';
+	ob.style.backgroundColor = '#FFB7BE';
+	// Set flag on page
+	$('#field_validation_error_state').val('1');
+	return false;
 }
