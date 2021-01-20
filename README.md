@@ -9,8 +9,14 @@ This REDCap module adds actions tags __@PREVENT-FUTUREDATE__ and __@PREVENT-PAST
 | Scenario 2    | @PREVENT-PASTDATE  | today - future  |
 | Scenario 3 __NOT SUPPORTED__   | @PREVENT-FUTUREDATE && @PREVENT-PASTDATE  | N/A - supplying both tags will not apply any date restrictions use __@TODAY__ instead  | 
 
-### Known Limitations
-The dates available in the datepicker are as of the current day, it is not relative to a specific date nor when an instrument was saved. Therefore, revisiting an instrument with tagged date fields a day or more later can result in:
+### Expected Behavior
+#### Date vs Datetime field
+REDCap handles date fields and datetime fields slightly differently:
+* If a datetime field fails validation and the datetimepicker is opened and loses focus, the input will be updated automatically to the closest valid date.
+* If a date field fails validation and the datepicker is opened and loses focus, the input will not be updated automatically but will instead need to be updated manually.
+
+#### Available dates
+Dates available in the datepicker are as of the current day, it is not relative to a specific date nor when an instrument was saved. Therefore, revisiting an instrument with tagged date fields a day or more later can result in:
 
 |               | Applied Tags  | Original Date Selected | (Original) Dates available in Datepicker | (+1D) Dates available in Datepciker
 | ------------- | ------------- | ------------- | ------------- | ------------- |
