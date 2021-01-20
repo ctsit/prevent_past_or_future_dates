@@ -24,9 +24,10 @@
  *  } 
  *  $input.attr("onblur", "wrapValidation(this, function(self) { return redcap_validate(self,'2021-01-15','2025-10-01','hard','date_ymd',1);})")
  *
- *  (Implemented) Option 4: Take relevant redcap_validate code and override failed validation alert message and behavior
+ *  (Implemented) Option 4: Take relevant redcap_validate code and tweak failed validation behavior and alert message
  *  Pros: Proper date validation, overrides alert message, focuses field on failed validation, maintains date format
  *  Cons: Duplicate code
+ * 
  * 
  *  REDCap alert call:
  *  var uniqueID = 'someUniqueID';
