@@ -37,75 +37,109 @@
  * 
  *  Relevant thread: // https://community.projectredcap.org/questions/41383/use-datepicker-in-external-module-custom-code.html
  **/
+const reDates = /(\d{4}-\d{2}-\d{2}[^']*)/g;
+let isValidClick = false;
+
 $(document).ready(function () {
-    let module = ExternalModules['PastFutureDateTags'].ExternalModule;
-    let preventFutureDateFields = JSON.parse(module.tt('preventFutureDateFields'));
-    let preventPastDateFields = JSON.parse(module.tt('preventPastDateFields'));
-    let attachedListeners = false;
-    
-    const reDates = /(\d{4}-\d{2}-\d{2}[^']*)/g;
+	let module = ExternalModules['PastFutureDateTags'].ExternalModule;
+	let preventFutureDateFields = JSON.parse(module.tt('preventFutureDateFields'));
+	let preventPastDateFields = JSON.parse(module.tt('preventPastDateFields'));
+	let attachedListeners = false;
 
-    // REDCap calls $.datepicker.setDefaults() after External Module javascript is executed.
-    // Because of this the restrictions on the jQuery UI datepicker need to be applied after
-    // all scripts have been loaded.
-    $('#form').on('mouseover', function() {
-        if (!attachedListeners) {
-            attachedListeners = true;
-            applyDateRestrictions(preventFutureDateFields, preventFutureDate);
-            applyDateRestrictions(preventPastDateFields, preventPastDate);
-        }
-    });
-
-    function applyDateRestrictions(dateFields, fn) {
-        for (const field of dateFields) {
-            fn(field);
-        }
-    }
-
-    // Sets the maxDate option on the jQuery UI datepicker
-    function preventFutureDate(field) {
-        let $input = $(`#${field}-tr input`);
-        let val = $input.attr("onblur");
-        let dateFormat = $input.attr('fv');
-        let [minDate, maxDate] = val.match(reDates);
-
-		// Prevent all past dates (-0d)
-        $input.datepicker("option", "maxDate", "+0d");
-        // Override onblur callback function 
-        $input.attr("onblur", "validate(this, '" + minDate + "','" + getBoundary(dateFormat, false) + "','soft-typed','" + dateFormat + "',1)");
-    }
-
-    // Sets the minDate option on the jQuery UI datepicker
-    function preventPastDate(field) {
-        let $input = $(`#${field}-tr input`);
-		let val = $input.attr("onblur");
-        let dateFormat = $input.attr('fv');
-        let [minDate, maxDate] = val.match(reDates);
-
-		// Prevent all past dates (-0d)
-		$input.datepicker("option", "minDate", "-0d");
-        // Override onblur callback function 
-        $input.attr("onblur", "validate(this, '" + getBoundary(dateFormat, true) + "','" + maxDate + "','soft-typed','" + dateFormat + "',1)");
-	}
-	
-	function getBoundary(datetimeFormat, isLowerBound) {
-		let today = new Date().toISOString().slice(0, 10);
-		// matches datetime_seconds_xyz
-		if (datetimeFormat.indexOf('datetime_seconds_') >= 0) {
-			return today + " " + ((isLowerBound) ? "00:00:00" : "23:59:59");
-			// matches datetime_xyz
-		} else if (datetimeFormat.indexOf('datetime_') >= 0) {
-			return today + " " + ((isLowerBound) ? "00:00" : "23:59");
-			// matches date_xyz
-		} else if (datetimeFormat.indexOf('date_') >= 0) {
-			return today;
+	// REDCap calls $.datepicker.setDefaults() after External Module javascript is executed.
+	// Because of this the restrictions on the jQuery UI datepicker need to be applied after
+	// all scripts have been loaded.
+	$('#form').on('mousemove', function() {
+		if (!attachedListeners) {
+			attachedListeners = true;
+			applyDateRestrictions(preventFutureDateFields, preventFutureDate);
+			applyDateRestrictions(preventPastDateFields, preventPastDate);
 		}
-	}
+	});
 });
+
+function applyDateRestrictions(dateFields, fn) {
+	for (const field of dateFields) {
+		fn(field);
+	}
+}
+
+// Sets the maxDate option on the jQuery UI datepicker
+function preventFutureDate(field) {
+	let $input = $(`#${field}-tr input`);
+	let val = $input.attr("onblur");
+	let dateFormat = $input.attr('fv');
+	let [minDate, _] = val.match(reDates);
+
+	// REDCap uses both datepicker and datetimepicker resulting in odd behavior when applying min and max dates. 
+	// When a min/max date is applied to the datepicker all time formats are removed from the input field.
+	// To preserve time formats the value is stored, the min/max date is set, and the input value is set with the stored value.
+	if (isDateTime(dateFormat)) {
+		let previousValue = $input.val();
+		$input.datepicker("option", "maxDate", "+0d");
+		// TODO: Figure out how to apply constrainInput
+		$input.val(previousValue);
+	} else {
+		$input.datepicker("option", "maxDate", "+0d");
+		$input.datepicker("option", "constrainInput", true);
+		// REDCap initalizes datepickers with onSelect, however doing so prevents the input field from maintaining focus and being valided if the datepicker is selected more than once 
+		// By using onClose instead (as REDCAP initializes datetimepicker) the input will not lose focus and thereby prevent circumventing validation
+		$input.datepicker("option", "onSelect", null);
+		$input.datepicker("option", "onClose", function(){ $(this).focus(); dataEntryFormValuesChanged=true; try{ calculate($(this).attr('name'));doBranching($(this).attr('name')); }catch(e){ } });
+	}
+
+	// Override onblur callback function 
+	$input.attr("onblur", "validate(this, '" + minDate + "','" + getBoundary(dateFormat, false) + "','soft-typed','" + dateFormat + "',1)");
+}
+
+// Sets the minDate option on the jQuery UI datepicker
+function preventPastDate(field) {
+	let $input = $(`#${field}-tr input`);
+	let val = $input.attr("onblur");
+	let dateFormat = $input.attr('fv');
+	let [_, maxDate] = val.match(reDates);
+
+	// REDCap uses both datepicker and datetimepicker resulting in odd behavior when applying min and max dates. 
+	// When a min/max date is applied to the datepicker all time formats are removed from the input field.
+	// To preserve time formats the value is stored, the min/max date is set, and the input value is set with the stored value.
+	if (isDateTime(dateFormat)) {
+		let previousValue = $input.val();
+		$input.datepicker("option", "minDate", "-0d");
+		// TODO: Figure out how to apply constrainInput
+		$input.val(previousValue);
+	} else {
+		$input.datepicker("option", "minDate", "-0d");
+		$input.datepicker("option", "constrainInput", true);
+		$input.datepicker("option", "onSelect", null);
+		// REDCap initalizes datepickers with onSelect, however doing so prevents the input field from maintaining focus and being valided if the datepicker is selected more than once 
+		// By using onClose instead (as REDCAP initializes datetimepicker) the input will not lose focus and thereby prevent circumventing validation
+		$input.datepicker("option", "onClose", function(){ $(this).focus(); dataEntryFormValuesChanged=true; try{ calculate($(this).attr('name'));doBranching($(this).attr('name')); }catch(e){ } });
+	}
+
+	// Override onblur callback function 
+	$input.attr("onblur", "validate(this, '" + getBoundary(dateFormat, true) + "','" + maxDate + "','soft-typed','" + dateFormat + "',1)");
+}
+
+function isDateTime(format) {
+	return format.indexOf('datetime_') >= 0;
+}
+
+function getBoundary(datetimeFormat, isLowerBound) {
+	let today = new Date().toISOString().slice(0, 10);
+	// matches datetime_seconds_xyz
+	if (datetimeFormat.indexOf('datetime_seconds_') >= 0) {
+		return today + " " + ((isLowerBound) ? "00:00:00" : "23:59:59");
+		// matches datetime_xyz
+	} else if (datetimeFormat.indexOf('datetime_') >= 0) {
+		return today + " " + ((isLowerBound) ? "00:00" : "23:59");
+		// matches date_xyz
+	} else if (datetimeFormat.indexOf('date_') >= 0) {
+		return today;
+	}
+}
 
 // Relevant snippets copied from base.js/redcap_validate(ob, min, max, returntype, texttype, regexVal, returnFocus, dateDelimiterReturned)
 function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
-    // console.log(ob, min, max, returntype, texttype, regexVal, returnFocus);
     var origVal;
 
 	// Reset flag on page
@@ -115,15 +149,28 @@ function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
 	if (ob.value == '' || $.inArray(ob.value, missing_data_codes) !== -1) {
 		ob.style.fontWeight = 'normal';
 		ob.style.backgroundColor='#FFFFFF';
+		console.log('is blank or missing data code');
 		return true;
 	}
-    origVal = ob.value;
-    
-    // If datetime-picker was just clicked, do nothing because onblur will check this later
+	origVal = ob.value;
+	
+	// If datetime-picker was just clicked, do nothing because onblur will check this later unless the datetime-picker clicked is not sibling
 	try {		
-		if (typeof object_clicked == 'object' && (object_clicked.hasClass('ui-datepicker-trigger') || object_clicked.parents('.ui-datepicker:visible').length > 0)) {
+		var isSibling = object_clicked.prev().attr('id') === $(ob).attr('id');
+
+		// If the datepicker was just clicked then set isValidClick to true to allow for siblings to be clicked without triggering validation before onblur
+		if (isSibling && typeof object_clicked == 'object' && object_clicked.hasClass('ui-datepicker-trigger')) {
 			ob.style.fontWeight = 'normal';
 			ob.style.backgroundColor='#FFFFFF';
+			isValidClick = true;
+			return true;
+		}
+
+		// If any sibling of the datepicker is clicked, defer validation to onblur
+		if  (isValidClick && object_clicked.parents('.ui-datepicker:visible').length > 0 || object_clicked.siblings('input').attr('id') === $(ob).attr('id')) {
+			ob.style.fontWeight = 'normal';
+			ob.style.backgroundColor='#FFFFFF';
+			isValidClick = false;
 			return true;
 		}
 	} catch(e) { }
