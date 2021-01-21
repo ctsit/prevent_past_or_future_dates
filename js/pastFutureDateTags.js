@@ -57,6 +57,8 @@ $(document).ready(function () {
 			applyDateRestrictions(preventPastDateFields, preventPastDate);
 		}
 	});
+
+	
 });
 
 function applyDateRestrictions(dateFields, fn) {
@@ -70,7 +72,11 @@ function preventFutureDate(field) {
 	let $input = $(`#${field}-tr input`);
 	let val = $input.attr("onblur");
 	let dateFormat = $input.attr('fv');
-	let [minDate, _] = val.match(reDates);
+	let minDate = '';
+	// Maintain minDate if one is applied, otherwise leave blank
+	try {
+		[minDate, _] = val.match(reDates);
+	} catch (e) {}
 
 	// REDCap uses both datepicker and datetimepicker resulting in odd behavior when applying min and max dates. 
 	// When a min/max date is applied to the datepicker all time formats are removed from the input field.
@@ -98,7 +104,12 @@ function preventPastDate(field) {
 	let $input = $(`#${field}-tr input`);
 	let val = $input.attr("onblur");
 	let dateFormat = $input.attr('fv');
-	let [_, maxDate] = val.match(reDates);
+	let maxDate = '';
+	// Maintain maxDate if one is applied, otherwise leave blank
+	try {
+		[_, maxDate] = val.match(reDates);
+	} catch (e) {}
+
 
 	// REDCap uses both datepicker and datetimepicker resulting in odd behavior when applying min and max dates. 
 	// When a min/max date is applied to the datepicker all time formats are removed from the input field.
@@ -141,7 +152,7 @@ function getBoundary(datetimeFormat, isLowerBound) {
 
 // Relevant snippets copied from base.js/redcap_validate(ob, min, max, returntype, texttype, regexVal, returnFocus, dateDelimiterReturned)
 function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
-    var origVal;
+	var origVal;
 
 	// Reset flag on page
 	$('#field_validation_error_state').val('0');
@@ -176,18 +187,18 @@ function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
 		}
 	} catch(e) { }
 	
-    // Get ID of field: If field does not have an id, then given it a random one so later we can reference it directly.
+	// Get ID of field: If field does not have an id, then given it a random one so later we can reference it directly.
 	var obId = $(ob).attr('id');
 	if (obId == null) {
 		obId = "val-"+Math.floor(Math.random()*10000000000000000);
 		$(ob).attr('id', obId);
-    }
-    
-    // Set the Javascript for returning focus back on element (if specified)
+	}
+	
+	// Set the Javascript for returning focus back on element (if specified)
 	if (returnFocus == null) returnFocus = 1;
-    var returnFocusJS = (returnFocus == 1) ? "$('#"+obId+"').focus();" : "";
-    
-    if (regexVal != null)
+	var returnFocusJS = (returnFocus == 1) ? "$('#"+obId+"').focus();" : "";
+	
+	if (regexVal != null)
 	{
 		// Before evaluating with regex, first do some cleaning
 		ob.value = trim(ob.value);
@@ -319,7 +330,7 @@ function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
 			ob.style.fontWeight = 'normal';
 			ob.style.backgroundColor='#FFFFFF';
 			return true;
-        }
+		}
 	}
 	
 	var msg = ($('#valtext_divs #valtext_regex').length) ? $('#valtext_divs #valtext_regex').text() : 'The value you provided could not be validated because it does not follow the expected format. Please try again.';
