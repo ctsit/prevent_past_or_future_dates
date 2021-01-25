@@ -10,6 +10,16 @@
             "name": "Michael Bentz",
             "email": "mbentz@ufl.edu",
             "institution": "University of Florida"
+        },
+        {
+            "name": "Kyle Chesney",
+            "email": "kyle.chesney@ufl.edu",
+            "institution": "University of Florida"
+        },
+        {
+            "name": "Taryn Stoffs",
+            "email": "tls@ufl.edu",
+            "institution": "University of Florida"
         }
     ]
 }
