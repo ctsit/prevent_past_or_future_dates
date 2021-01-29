@@ -70,12 +70,17 @@ function applyDateRestrictions(dateFields, fn) {
 // Sets the maxDate option on the jQuery UI datepicker
 function preventFutureDate(field) {
 	let $input = $(`#${field}-tr input`);
-	let val = $input.attr("onblur");
+	let inputAttrVal = $input.attr("value");
+
+	// Prevent validation for vields that were set correctly before
+	if (inputAttrVal) return;
+
+	let onBlur = $input.attr("onblur");
 	let dateFormat = $input.attr('fv');
 	let minDate = '';
 	// Maintain minDate if one is applied, otherwise leave blank
 	try {
-		[minDate, _] = val.match(reDates);
+		[minDate, _] = onBlur.match(reDates);
 	} catch (e) {}
 
 	// REDCap uses both datepicker and datetimepicker resulting in odd behavior when applying min and max dates. 
@@ -102,12 +107,17 @@ function preventFutureDate(field) {
 // Sets the minDate option on the jQuery UI datepicker
 function preventPastDate(field) {
 	let $input = $(`#${field}-tr input`);
-	let val = $input.attr("onblur");
+	let inputAttrVal = $input.attr("value");
+
+	// Prevent validation for vields that were set correctly before
+	if (inputAttrVal) return;
+
+	let onBlur = $input.attr("onblur");
 	let dateFormat = $input.attr('fv');
 	let maxDate = '';
 	// Maintain maxDate if one is applied, otherwise leave blank
 	try {
-		[_, maxDate] = val.match(reDates);
+		[_, maxDate] = onBlur.match(reDates);
 	} catch (e) {}
 
 
