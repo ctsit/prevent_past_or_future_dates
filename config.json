@@ -1,7 +1,7 @@
 {
     "name": "Past Future Date Tags",
-    "namespace": "PastFutureDate\\ExternalModule",
-    "description": "This module adds action tags to prevent past dates and future dates",
+    "namespace": "PastFutureDateTags\\ExternalModule",
+    "description": "This module adds action tags to prevent entering past dates or future dates for date fields",
     "permissions": [
         "redcap_every_page_top"
     ],
@@ -9,6 +9,16 @@
         {
             "name": "Michael Bentz",
             "email": "mbentz@ufl.edu",
+            "institution": "University of Florida"
+        },
+        {
+            "name": "Kyle Chesney",
+            "email": "kyle.chesney@ufl.edu",
+            "institution": "University of Florida"
+        },
+        {
+            "name": "Taryn Stoffs",
+            "email": "tls@ufl.edu",
             "institution": "University of Florida"
         }
     ]
