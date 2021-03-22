@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     $('body').on('dialogopen', function (event, ui) {
         let $popup = $(event.target);
-        let module = ExternalModules['PastFutureDateTags'].ExternalModule;
+        let module = ExternalModules['PreventPastOrFutureDates'].ExternalModule;
         let futureDateTag = module.tt('futureDateTag');
         let pastDateTag = module.tt('pastDateTag');
 

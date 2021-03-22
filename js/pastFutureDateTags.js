@@ -42,7 +42,7 @@ const reDates = /(\d{4}-\d{2}-\d{2}[^']*)/g;
 let isValidClick = false;
 
 $(document).ready(function () {
-	let module = ExternalModules['PastFutureDateTags'].ExternalModule;
+	let module = ExternalModules['PreventPastOrFutureDates'].ExternalModule;
 	let preventFutureDateFields = JSON.parse(module.tt('preventFutureDateFields'));
 	let preventPastDateFields = JSON.parse(module.tt('preventPastDateFields'));
 	let attachedListeners = false;
@@ -171,7 +171,7 @@ function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
 	if (ob.value == '' || $.inArray(ob.value, missing_data_codes) !== -1) {
 		ob.style.fontWeight = 'normal';
 		ob.style.backgroundColor='#FFFFFF';
-		console.log('is blank or missing data code');
+		//console.log('is blank or missing data code');
 		return true;
 	}
 	origVal = ob.value;

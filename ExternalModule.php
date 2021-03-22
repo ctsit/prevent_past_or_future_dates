@@ -1,6 +1,6 @@
 <?php
 
-namespace PastFutureDateTags\ExternalModule;
+namespace PreventPastOrFutureDates\ExternalModule;
 
 use ExternalModules\AbstractExternalModule;
 
