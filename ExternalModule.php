@@ -136,7 +136,7 @@ class ExternalModule extends AbstractExternalModule
             $this->initializeJavascriptModuleObject();
             $this->tt_addToJavascriptModuleObject('preventFutureDateFields', json_encode($preventFutureDateFields));
             $this->tt_addToJavascriptModuleObject('preventPastDateFields', json_encode($preventPastDateFields));
-            $this->includeSource(ResourceType::JS, 'js/pastFutureDateTags.js');
+            $this->includeSource(ResourceType::JS, 'js/preventPastOrFutureDates.js');
         }
     }
 }
