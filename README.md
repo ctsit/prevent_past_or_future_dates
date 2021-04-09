@@ -1,4 +1,4 @@
-# Past Future Date Tags
+# Prevent Past or Future Dates
 This REDCap module adds actions tags __@PREVENT-FUTUREDATE__ and __@PREVENT-PASTDATE__ that can be applied to date fields - i.e., a text field with date validation applied - to disallow entry of dates in the future or past, respectively. The tags are mutually exclusive, applying both tags will not result in any date restrictions. To enforce today's date use the __@TODAY__ action tag instead.
 
 ![Prevent Future Date](img/prevent_futuredate_mdy.png)
@@ -7,9 +7,9 @@ This REDCap module adds actions tags __@PREVENT-FUTUREDATE__ and __@PREVENT-PAST
 - REDCap >= 10.0.1
 
 ## Installation
-- Clone this repo into to `<redcap-root>/modules/past_future_date_tags_v0.0.0`.
-- Go to **Control Center > Manage External Modules** and enable Past Future Date Tags
-- For each project you want to use this module, go to the project home page, click on **Manage External Modules** link, and then enable Past Future Date Tags for that project.
+- Clone this repo into to `<redcap-root>/modules/prevent_past_or_future_dates_v0.0.0`.
+- Go to **Control Center > Manage External Modules** and enable _Prevent Past or Future Dates_.
+- For each project you want to use this module, go to the project home page, click on **Manage External Modules** link, and then enable _Prevent Past or Future Dates_ for that project.
 
 ## Expected Behavior
 
