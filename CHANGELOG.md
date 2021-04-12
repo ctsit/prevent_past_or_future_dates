@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to Prevent Past or Future Dates will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.1] - 2021-04-12
+### Added
+ - Add Zenodo DOI to README (Kyle Chesney)
+
+
 ## [1.0.0] - 2021-04-12
 ### Summary
  - Initial release of Prevent Past or Future Dates
