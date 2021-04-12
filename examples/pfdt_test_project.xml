@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ODM xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:redcap="https://projectredcap.org" xsi:schemaLocation="http://www.cdisc.org/ns/odm/v1.3 schema/odm/ODM1-3-1.xsd" ODMVersion="1.3.1" FileOID="000-00-0000" FileType="Snapshot" Description="past_future_date_tags" AsOfDateTime="2021-01-21T13:02:51" CreationDateTime="2021-01-21T13:02:51" SourceSystem="REDCap" SourceSystemVersion="10.0.1">
+<Study OID="Project.Pastfuturedatetags">
+<GlobalVariables>
+	<StudyName>past_future_date_tags</StudyName>
+	<StudyDescription>This file contains the metadata, events, and data for REDCap project "past_future_date_tags".</StudyDescription>
+	<ProtocolName>past_future_date_tags</ProtocolName>
+	<redcap:RecordAutonumberingEnabled>1</redcap:RecordAutonumberingEnabled>
+	<redcap:CustomRecordLabel></redcap:CustomRecordLabel>
+	<redcap:SecondaryUniqueField></redcap:SecondaryUniqueField>
+	<redcap:SchedulingEnabled>0</redcap:SchedulingEnabled>
+	<redcap:SurveysEnabled>0</redcap:SurveysEnabled>
+	<redcap:SurveyInvitationEmailField></redcap:SurveyInvitationEmailField>
+	<redcap:Purpose>0</redcap:Purpose>
+	<redcap:PurposeOther></redcap:PurposeOther>
+	<redcap:ProjectNotes></redcap:ProjectNotes>
+	<redcap:MissingDataCodes></redcap:MissingDataCodes>
+</GlobalVariables>
+<MetaDataVersion OID="Metadata.Pastfuturedatetags_2021-01-21_1302" Name="past_future_date_tags" redcap:RecordIdField="record_id">
+	<FormDef OID="Form.test_dates" Name="Test Dates" Repeating="No" redcap:FormName="test_dates">
+		<ItemGroupRef ItemGroupOID="test_dates.record_id" Mandatory="No"/>
+		<ItemGroupRef ItemGroupOID="test_dates.test_dates_complete" Mandatory="No"/>
+	</FormDef>
+	<ItemGroupDef OID="test_dates.record_id" Name="Test Dates" Repeating="No">
+		<ItemRef ItemOID="record_id" Mandatory="No" redcap:Variable="record_id"/>
+		<ItemRef ItemOID="prevent_futuredate_mdy" Mandatory="No" redcap:Variable="prevent_futuredate_mdy"/>
+		<ItemRef ItemOID="prevent_futuredate_dmy" Mandatory="No" redcap:Variable="prevent_futuredate_dmy"/>
+		<ItemRef ItemOID="prevent_futuredate_ymd" Mandatory="No" redcap:Variable="prevent_futuredate_ymd"/>
+		<ItemRef ItemOID="prevent_futuredate_mdy_hm" Mandatory="No" redcap:Variable="prevent_futuredate_mdy_hm"/>
+		<ItemRef ItemOID="prevent_futuredate_dmy_hm" Mandatory="No" redcap:Variable="prevent_futuredate_dmy_hm"/>
+		<ItemRef ItemOID="prevent_futuredate_ymd_hm" Mandatory="No" redcap:Variable="prevent_futuredate_ymd_hm"/>
+		<ItemRef ItemOID="prevent_futuredate_mdy_hms" Mandatory="No" redcap:Variable="prevent_futuredate_mdy_hms"/>
+		<ItemRef ItemOID="prevent_futuredate_dmy_hms" Mandatory="No" redcap:Variable="prevent_futuredate_dmy_hms"/>
+		<ItemRef ItemOID="prevent_futuredate_ymd_hms" Mandatory="No" redcap:Variable="prevent_futuredate_ymd_hms"/>
+		<ItemRef ItemOID="prevent_pastdate_mdy" Mandatory="No" redcap:Variable="prevent_pastdate_mdy"/>
+		<ItemRef ItemOID="prevent_pastdate_dmy" Mandatory="No" redcap:Variable="prevent_pastdate_dmy"/>
+		<ItemRef ItemOID="prevent_pastdate_ymd" Mandatory="No" redcap:Variable="prevent_pastdate_ymd"/>
+		<ItemRef ItemOID="prevent_pastdate_mdy_hm" Mandatory="No" redcap:Variable="prevent_pastdate_mdy_hm"/>
+		<ItemRef ItemOID="prevent_pastdate_dmy_hm" Mandatory="No" redcap:Variable="prevent_pastdate_dmy_hm"/>
+		<ItemRef ItemOID="prevent_pastdate_ymd_hm" Mandatory="No" redcap:Variable="prevent_pastdate_ymd_hm"/>
+		<ItemRef ItemOID="prevent_pastdate_mdy_hms" Mandatory="No" redcap:Variable="prevent_pastdate_mdy_hms"/>
+		<ItemRef ItemOID="prevent_pastdate_dmy_hms" Mandatory="No" redcap:Variable="prevent_pastdate_dmy_hms"/>
+		<ItemRef ItemOID="prevent_pastdate_ymd_hms" Mandatory="No" redcap:Variable="prevent_pastdate_ymd_hms"/>
+	</ItemGroupDef>
+	<ItemGroupDef OID="test_dates.test_dates_complete" Name="Form Status" Repeating="No">
+		<ItemRef ItemOID="test_dates_complete" Mandatory="No" redcap:Variable="test_dates_complete"/>
+	</ItemGroupDef>
+	<ItemDef OID="record_id" Name="record_id" DataType="text" Length="999" redcap:Variable="record_id" redcap:FieldType="text">
+		<Question><TranslatedText>Study ID</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_futuredate_mdy" Name="prevent_futuredate_mdy" DataType="date" Length="999" redcap:Variable="prevent_futuredate_mdy" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:FieldAnnotation="@PREVENT-FUTUREDATE">
+		<Question><TranslatedText>prevent_futuredate_mdy</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_futuredate_dmy" Name="prevent_futuredate_dmy" DataType="date" Length="999" redcap:Variable="prevent_futuredate_dmy" redcap:FieldType="text" redcap:TextValidationType="date_dmy" redcap:FieldAnnotation="@PREVENT-FUTUREDATE">
+		<Question><TranslatedText>prevent_futuredate_dmy</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_futuredate_ymd" Name="prevent_futuredate_ymd" DataType="date" Length="999" redcap:Variable="prevent_futuredate_ymd" redcap:FieldType="text" redcap:TextValidationType="date_ymd" redcap:FieldAnnotation="@PREVENT-FUTUREDATE">
+		<Question><TranslatedText>prevent_futuredate_ymd</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_futuredate_mdy_hm" Name="prevent_futuredate_mdy_hm" DataType="partialDatetime" Length="999" redcap:Variable="prevent_futuredate_mdy_hm" redcap:FieldType="text" redcap:TextValidationType="datetime_mdy" redcap:FieldAnnotation="@PREVENT-FUTUREDATE">
+		<Question><TranslatedText>prevent_futuredate_mdy_HM</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_futuredate_dmy_hm" Name="prevent_futuredate_dmy_hm" DataType="partialDatetime" Length="999" redcap:Variable="prevent_futuredate_dmy_hm" redcap:FieldType="text" redcap:TextValidationType="datetime_dmy" redcap:FieldAnnotation="@PREVENT-FUTUREDATE">
+		<Question><TranslatedText>prevent_futuredate_dmy_HM</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_futuredate_ymd_hm" Name="prevent_futuredate_ymd_hm" DataType="partialDatetime" Length="999" redcap:Variable="prevent_futuredate_ymd_hm" redcap:FieldType="text" redcap:TextValidationType="datetime_ymd" redcap:FieldAnnotation="@PREVENT-FUTUREDATE">
+		<Question><TranslatedText>prevent_futuredate_ymd_HM</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_futuredate_mdy_hms" Name="prevent_futuredate_mdy_hms" DataType="datetime" Length="999" redcap:Variable="prevent_futuredate_mdy_hms" redcap:FieldType="text" redcap:TextValidationType="datetime_seconds_mdy" redcap:FieldAnnotation="@PREVENT-FUTUREDATE">
+		<Question><TranslatedText>prevent_futuredate_mdy_HMS</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_futuredate_dmy_hms" Name="prevent_futuredate_dmy_hms" DataType="datetime" Length="999" redcap:Variable="prevent_futuredate_dmy_hms" redcap:FieldType="text" redcap:TextValidationType="datetime_seconds_dmy" redcap:FieldAnnotation="@PREVENT-FUTUREDATE">
+		<Question><TranslatedText>prevent_futuredate_dmy_HMS</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_futuredate_ymd_hms" Name="prevent_futuredate_ymd_hms" DataType="datetime" Length="999" redcap:Variable="prevent_futuredate_ymd_hms" redcap:FieldType="text" redcap:TextValidationType="datetime_seconds_ymd" redcap:FieldAnnotation="@PREVENT-FUTUREDATE">
+		<Question><TranslatedText>prevent_futuredate_ymd_HMS</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_pastdate_mdy" Name="prevent_pastdate_mdy" DataType="date" Length="999" redcap:Variable="prevent_pastdate_mdy" redcap:FieldType="text" redcap:TextValidationType="date_mdy" redcap:FieldAnnotation="@PREVENT-PASTDATE">
+		<Question><TranslatedText>prevent_pastdate_mdy</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_pastdate_dmy" Name="prevent_pastdate_dmy" DataType="date" Length="999" redcap:Variable="prevent_pastdate_dmy" redcap:FieldType="text" redcap:TextValidationType="date_dmy" redcap:FieldAnnotation="@PREVENT-PASTDATE">
+		<Question><TranslatedText>prevent_pastdate_dmy</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_pastdate_ymd" Name="prevent_pastdate_ymd" DataType="date" Length="999" redcap:Variable="prevent_pastdate_ymd" redcap:FieldType="text" redcap:TextValidationType="date_ymd" redcap:FieldAnnotation="@PREVENT-PASTDATE">
+		<Question><TranslatedText>prevent_pastdate_ymd</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_pastdate_mdy_hm" Name="prevent_pastdate_mdy_hm" DataType="partialDatetime" Length="999" redcap:Variable="prevent_pastdate_mdy_hm" redcap:FieldType="text" redcap:TextValidationType="datetime_mdy" redcap:FieldAnnotation="@PREVENT-PASTDATE">
+		<Question><TranslatedText>prevent_pastdate_mdy_HM</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_pastdate_dmy_hm" Name="prevent_pastdate_dmy_hm" DataType="partialDatetime" Length="999" redcap:Variable="prevent_pastdate_dmy_hm" redcap:FieldType="text" redcap:TextValidationType="datetime_dmy" redcap:FieldAnnotation="@PREVENT-PASTDATE">
+		<Question><TranslatedText>prevent_pastdate_dmy_HM</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_pastdate_ymd_hm" Name="prevent_pastdate_ymd_hm" DataType="partialDatetime" Length="999" redcap:Variable="prevent_pastdate_ymd_hm" redcap:FieldType="text" redcap:TextValidationType="datetime_ymd" redcap:FieldAnnotation="@PREVENT-PASTDATE">
+		<Question><TranslatedText>prevent_pastdate_ymd_HM</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_pastdate_mdy_hms" Name="prevent_pastdate_mdy_hms" DataType="datetime" Length="999" redcap:Variable="prevent_pastdate_mdy_hms" redcap:FieldType="text" redcap:TextValidationType="datetime_seconds_mdy" redcap:FieldAnnotation="@PREVENT-PASTDATE">
+		<Question><TranslatedText>prevent_pastdate_mdy_HMS</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_pastdate_dmy_hms" Name="prevent_pastdate_dmy_hms" DataType="datetime" Length="999" redcap:Variable="prevent_pastdate_dmy_hms" redcap:FieldType="text" redcap:TextValidationType="datetime_seconds_dmy" redcap:FieldAnnotation="@PREVENT-PASTDATE">
+		<Question><TranslatedText>prevent_pastdate_dmy_HMS</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="prevent_pastdate_ymd_hms" Name="prevent_pastdate_ymd_hms" DataType="datetime" Length="999" redcap:Variable="prevent_pastdate_ymd_hms" redcap:FieldType="text" redcap:TextValidationType="datetime_seconds_ymd" redcap:FieldAnnotation="@PREVENT-PASTDATE">
+		<Question><TranslatedText>prevent_pastdate_ymd_HMS</TranslatedText></Question>
+	</ItemDef>
+	<ItemDef OID="test_dates_complete" Name="test_dates_complete" DataType="text" Length="1" redcap:Variable="test_dates_complete" redcap:FieldType="select" redcap:SectionHeader="Form Status">
+		<Question><TranslatedText>Complete?</TranslatedText></Question>
+		<CodeListRef CodeListOID="test_dates_complete.choices"/>
+	</ItemDef>
+	<CodeList OID="test_dates_complete.choices" Name="test_dates_complete" DataType="text" redcap:Variable="test_dates_complete">
+		<CodeListItem CodedValue="0"><Decode><TranslatedText>Incomplete</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="1"><Decode><TranslatedText>Unverified</TranslatedText></Decode></CodeListItem>
+		<CodeListItem CodedValue="2"><Decode><TranslatedText>Complete</TranslatedText></Decode></CodeListItem>
+	</CodeList>
+</MetaDataVersion>
+</Study>
+</ODM>

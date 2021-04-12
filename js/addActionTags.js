@@ -5,23 +5,32 @@ $(document).ready(function () {
 
     $('body').on('dialogopen', function (event, ui) {
         let $popup = $(event.target);
-        let module = ExternalModules['PastFutureDate'].ExternalModule;
+        let module = ExternalModules['PreventPastOrFutureDates'].ExternalModule;
         let futureDateTag = module.tt('futureDateTag');
         let pastDateTag = module.tt('pastDateTag');
-        let markerElement = module.tt('markerElement');
-        let helpUrl = module.tt('helpUrl');
 
-        appendToMarkerElement($popup, markerElement, futureDateTag, helpUrl);
-        appendToMarkerElement($popup, futureDateTag, pastDateTag, helpUrl);
+        var result = $popup.find('tr td.nowrap:nth-child(2)').filter(function(index, element) { 
+            var result = $(element).text() > futureDateTag;
+            if (result) {
+                return result;
+            }
+        });
+        
+        if (result.length < 1) return;
+
+        let markerElement = $(result[0]).text();
+        prependActionTag($popup, markerElement, futureDateTag, 'Prevents future dates from being entered into date field-—i.e., a text field with date validation applied. This and @PREVENT-PASTDATE are mutually exclusive, to enforce today use @TODAY');
+        prependActionTag($popup, markerElement, pastDateTag, 'Prevents past dates from being entered into date field-—i.e., a text field with date validation applied. This and @PREVENT-FUTUREDATE are mutually exclusive, to enforce today use @TODAY');
     });
 
-    var appendToMarkerElement = function (container, markerElement, tagName, helpUrl) {
+    var prependActionTag = function (container, markerElement, tagName, tagDescription) {
         // Aux function that checks if text matches the "@HIDECHOICE" string.
         var isDefaultLabelColumn = function () {
+            // console.log($(this).text(), markerElement);
             return $(this).text() === markerElement;
         }
 
-        // Getting @PREFILL row from action tags help table.
+        // Getting markerElement row from action tags help table.
         var $default_action_tag = container.find('td').filter(isDefaultLabelColumn).parent();
         if ($default_action_tag.length !== 1) {
             return false;
@@ -30,18 +39,7 @@ $(document).ready(function () {
         // Create the help text
         var descr = $('<div></div>')
             .addClass('pastfuturedate-container')
-            .html('Prevents a radio, checkbox, or text field into a clickable image. For example, to display a male body '
-                + 'with clickable body parts, you may use <nobr>@IMAGEMAP=PAINMAP_MALE</nobr>.  For a full list of available '
-                + 'image maps and details about options, please reference the:<br>');
-        $('<a></a>')
-            .attr('href', helpUrl)
-            .attr('target', '_BLANK')
-            .append(
-                $('<div></div>')
-                    .addClass('btn btn-xs btn-primary')
-                    .text('Full Documentation')
-            )
-            .appendTo(descr);
+            .html(tagDescription);
 
         // Creating a new action tag row.
         var $new_action_tag = $default_action_tag.clone();
@@ -58,7 +56,7 @@ $(document).ready(function () {
         $cols.last().html(descr);
 
         // Placing new action tag.
-        $new_action_tag.insertAfter($default_action_tag);
+        $new_action_tag.insertBefore($default_action_tag);
     }
 
 });
