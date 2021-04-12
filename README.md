@@ -1,4 +1,7 @@
 # Prevent Past or Future Dates
+
+[![DOI](http://zenodo.org/badge/DOI/10.5281/zenodo.4681708.svg)](http://doi.org/10.5281/zenodo.4681708)
+
 This REDCap module adds actions tags __@PREVENT-FUTUREDATE__ and __@PREVENT-PASTDATE__ that can be applied to date fields - i.e., a text field with date validation applied - to disallow entry of dates in the future or past, respectively. The tags are mutually exclusive, applying both tags will not result in any date restrictions. To enforce today's date use the __@TODAY__ action tag instead.
 
 ![Prevent Future Date](img/prevent_futuredate_mdy.png)
