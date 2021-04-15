@@ -42,7 +42,7 @@ const reDates = /(\d{4}-\d{2}-\d{2}[^']*)/g;
 let isValidClick = false;
 
 $(document).ready(function () {
-	let module = ExternalModules['PastFutureDateTags'].ExternalModule;
+	let module = ExternalModules['PreventPastOrFutureDates'].ExternalModule;
 	let preventFutureDateFields = JSON.parse(module.tt('preventFutureDateFields'));
 	let preventPastDateFields = JSON.parse(module.tt('preventPastDateFields'));
 	let attachedListeners = false;
@@ -70,12 +70,17 @@ function applyDateRestrictions(dateFields, fn) {
 // Sets the maxDate option on the jQuery UI datepicker
 function preventFutureDate(field) {
 	let $input = $(`#${field}-tr input`);
-	let val = $input.attr("onblur");
+	let inputAttrVal = $input.attr("value");
+
+	// Prevent validation for vields that were set correctly before
+	if (inputAttrVal) return;
+
+	let onBlur = $input.attr("onblur");
 	let dateFormat = $input.attr('fv');
 	let minDate = '';
 	// Maintain minDate if one is applied, otherwise leave blank
 	try {
-		[minDate, _] = val.match(reDates);
+		[minDate, _] = onBlur.match(reDates);
 	} catch (e) {}
 
 	// REDCap uses both datepicker and datetimepicker resulting in odd behavior when applying min and max dates. 
@@ -102,12 +107,17 @@ function preventFutureDate(field) {
 // Sets the minDate option on the jQuery UI datepicker
 function preventPastDate(field) {
 	let $input = $(`#${field}-tr input`);
-	let val = $input.attr("onblur");
+	let inputAttrVal = $input.attr("value");
+
+	// Prevent validation for vields that were set correctly before
+	if (inputAttrVal) return;
+
+	let onBlur = $input.attr("onblur");
 	let dateFormat = $input.attr('fv');
 	let maxDate = '';
 	// Maintain maxDate if one is applied, otherwise leave blank
 	try {
-		[_, maxDate] = val.match(reDates);
+		[_, maxDate] = onBlur.match(reDates);
 	} catch (e) {}
 
 
@@ -161,7 +171,7 @@ function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
 	if (ob.value == '' || $.inArray(ob.value, missing_data_codes) !== -1) {
 		ob.style.fontWeight = 'normal';
 		ob.style.backgroundColor='#FFFFFF';
-		console.log('is blank or missing data code');
+		//console.log('is blank or missing data code');
 		return true;
 	}
 	origVal = ob.value;
@@ -236,7 +246,8 @@ function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
 		}
 		
 		// Evaluate value with regex
-		eval('var regexVal2 = '+regexVal+';');
+		// Remove leading and trailing '/'
+		var regexVal2 = new RegExp(regexVal.slice(1,-1)); 
 		if (regexVal2.test(ob.value))
 		{
 			// Passed the regex test!
