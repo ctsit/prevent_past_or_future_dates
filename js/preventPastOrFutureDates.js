@@ -246,7 +246,8 @@ function validate(ob, min, max, returntype, texttype, regexVal, returnFocus) {
 		}
 		
 		// Evaluate value with regex
-		eval('var regexVal2 = '+regexVal+';');
+		// Remove leading and trailing '/'
+		regexVal2 = new RegExp(regexVal.slice(1,-1)); 
 		if (regexVal2.test(ob.value))
 		{
 			// Passed the regex test!
