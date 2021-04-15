@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to Prevent Past or Future Dates will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.2] - 2021-04-15
+### Added
+Add minimum REDCap and PHP version (Michael Bentz)
+
+### Changed
+Remove eval() in js (Michael Bentz)
+
+
 ## [1.0.1] - 2021-04-12
 ### Added
  - Add Zenodo DOI to README (Kyle Chesney)
