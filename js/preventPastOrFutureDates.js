@@ -38,13 +38,19 @@
  * 
  *  Relevant thread: // https://community.projectredcap.org/questions/41383/use-datepicker-in-external-module-custom-code.html
  **/
+var decodeHtml = function(html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+}
+
 const reDates = /(\d{4}-\d{2}-\d{2}[^']*)/g;
 let isValidClick = false;
 
 $(document).ready(function () {
 	let module = ExternalModules['PreventPastOrFutureDates'].ExternalModule;
-	let preventFutureDateFields = JSON.parse(module.tt('preventFutureDateFields'));
-	let preventPastDateFields = JSON.parse(module.tt('preventPastDateFields'));
+	let preventFutureDateFields = JSON.parse(decodeHtml(module.tt('preventFutureDateFields')));
+	let preventPastDateFields = JSON.parse(decodeHtml(module.tt('preventPastDateFields')));
 	let attachedListeners = false;
 
 	// REDCap calls $.datepicker.setDefaults() after External Module javascript is executed.
