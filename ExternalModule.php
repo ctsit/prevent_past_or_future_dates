@@ -118,6 +118,7 @@ class ExternalModule extends AbstractExternalModule
             // Iterate through all fields and search for date fields with @PREVENT-FUTUREDATE or @PREVENT-PASTDATE
             // and add them to an array to pass to JS to apply date restrictions. If both tags are added then no
             // restrictions will be applied.
+            $Proj->forms[$instrument]['fields'] ??= [];
             foreach (array_keys($Proj->forms[$instrument]['fields']) as $field_name) {
                 $field = $Proj->metadata[$field_name];
                 if ($this->isDateTypeField($field)) {

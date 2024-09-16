@@ -2,28 +2,16 @@
     "name": "Prevent Past or Future Dates",
     "namespace": "PreventPastOrFutureDates\\ExternalModule",
     "description": "This module adds action tags to prevent entering past dates or future dates for date and datetime fields.",
-    "permissions": [
-        "redcap_every_page_top"
-    ],
+    "framework-version": 15,
     "authors": [
         {
-            "name": "Michael Bentz",
-            "email": "mbentz@ufl.edu",
-            "institution": "University of Florida"
-        },
-        {
-            "name": "Kyle Chesney",
-            "email": "kyle.chesney@ufl.edu",
-            "institution": "University of Florida"
-        },
-        {
-            "name": "Taryn Stoffs",
-            "email": "tls@ufl.edu",
-            "institution": "University of Florida"
+            "name": "University of Florida CTS-IT",
+            "email": "CTSIT-REDCAP-MODULE-SUPPO@LISTS.UFL.EDU",
+            "institution": "University of Florida - CTSI"
         }
     ],
     "compatibility": {
-        "redcap-version-min": "9.5.0",
-        "php-version-min": "7.2.15"
+        "redcap-version-min": "14.0.2",
+        "php-version-min": "7.4.0"
     }
 }
