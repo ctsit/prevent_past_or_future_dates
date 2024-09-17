@@ -15,6 +15,11 @@
             "name": "Sai Pavan, Kamma",
             "affiliation": "University of Florida",
             "orcid": "0009-0004-4619-0409"
+        },
+        {
+            "name": "Bentz, Michael",
+            "affiliation": "University of Florida",
+            "orcid": "0000-0002-5790-4268"
         }
     ],
     "description": "This REDCap module adds actions tags @PREVENT-FUTUREDATE and @PREVENT-PASTDATE that can be applied to date fields - i.e., a text field with date validation applied.",
