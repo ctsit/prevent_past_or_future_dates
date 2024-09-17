@@ -1,0 +1,36 @@
+{
+    "title": "Prevent Past or Future Dates",
+    "upload_type": "software",
+    "creators": [{
+            "name": "Chase, Philip B",
+            "affiliation": "University of Florida",
+            "orcid": "0000-0002-5318-9420"
+        },
+        {
+            "name": "Chesney, Kyle",
+            "affiliation": "University of Florida",
+            "orcid": "0000-0002-0479-7251"
+        },
+        {
+            "name": "Sai Pavan, Kamma",
+            "affiliation": "University of Florida",
+            "orcid": "0009-0004-4619-0409"
+        },
+        {
+            "name": "Bentz, Michael",
+            "affiliation": "University of Florida",
+            "orcid": "0000-0002-5790-4268"
+        }
+    ],
+    "description": "This REDCap module adds actions tags @PREVENT-FUTUREDATE and @PREVENT-PASTDATE that can be applied to date fields - i.e., a text field with date validation applied.",
+    "access_right": "open",
+    "license": "Apache-2.0",
+    "references": [
+        "PA Harris, R Taylor, BL Minor, V Elliott, M Fernandez, L O'Neal, L McLeod, G Delacqua, F Delacqua, J Kirby, SN Duda, REDCap Consortium, The REDCap consortium: Building an international community of software partners, J Biomed Inform. 2019 May 9 [doi: 10.1016/j.jbi.2019.103208]",
+    ],
+    "keywords": [
+        "redcap",
+        "redcap external module",
+        "php"
+    ]
+}

@@ -7,7 +7,8 @@ This REDCap module adds actions tags __@PREVENT-FUTUREDATE__ and __@PREVENT-PAST
 ![Prevent Future Date](img/prevent_futuredate_mdy.png)
 
 ## Prerequisites
-- REDCap >= 10.0.1
+- REDCap >= 14.0.2
+- PHP >= 7.4
 
 ## Installation
 - Clone this repo into to `<redcap-root>/modules/prevent_past_or_future_dates_v0.0.0`.
