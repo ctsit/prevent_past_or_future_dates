@@ -1,3 +1,6 @@
+# prevent_past_or_future_dates 1.0.5 (released 2026-05-04)
+- Add missing image (@pbchase)
+
 # prevent_past_or_future_dates 1.0.4 (released 2026-05-04)
 - Mark this repo as deprecated (@pbchase, #14)
 
