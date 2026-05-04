@@ -1,3 +1,6 @@
+# prevent_past_or_future_dates 1.0.4 (released 2026-05-04)
+- Mark this repo as deprecated (@pbchase, #14)
+
 # prevent_past_or_future_dates 1.0.3 (released 2024-09-16)
 - Add .zenodo.json (@saipavan10-git, #11, #13)
 - Fix #10 (@saipavan10-git, #10, #13)
