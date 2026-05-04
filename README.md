@@ -1,3 +1,11 @@
+# DEPRECATED
+
+This REDCap external module is deprecated because REDCap now has functionality to mimic it. Vanderbilt University Medical Center (VUMC) added the ability to use piping and/or today/now for the min/max ranges for date fields. In the example below, the date entered has to be between their visit date and today’s date:
+
+![recommended validation rules](img/validation_image.png)
+
+To prevent a future date, you would use 'today ‘ (without quotes) for the maximum. To prevent a past date, you would use ’today’ (without quotes) for the minimum.
+
 # Prevent Past or Future Dates
 
 [![DOI](http://zenodo.org/badge/DOI/10.5281/zenodo.4681708.svg)](http://doi.org/10.5281/zenodo.4681708)
